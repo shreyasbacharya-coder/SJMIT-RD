@@ -1,0 +1,153 @@
+'use client';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Database, Loader2, Plus } from 'lucide-react';
+import Link from 'next/link';
+import { seedDatabase } from '@/shared/utils/seed';
+import { PageContainer } from '@/shared/components/PageContainer';
+import { PageHeader } from '@/shared/components/PageHeader';
+import { ConfirmationModal } from '@/shared/components/ConfirmationModal';
+import { ProtectedRoute } from '@/shared/components/ProtectedRoute';
+
+import { AdminDepartmentsPage } from '@/features/departments/pages/AdminDepartmentsPage';
+import { AdminFacilitiesPage } from '@/features/facilities/pages/AdminFacilitiesPage';
+import { AdminServicesPage } from '@/features/services/pages/AdminServicesPage';
+import { AdminDashboardPage } from '@/features/dashboard/pages/AdminDashboardPage';
+
+type Tab = 'dashboard' | 'department' | 'facility' | 'service';
+
+const pageDetails: { [key in Tab]: { title: React.ReactNode, description: string } } = {
+  dashboard: {
+    title: <>Admin <br /><span className="text-gradient">Dashboard</span></>,
+    description: "An overview of the research infrastructure ecosystem."
+  },
+  department: {
+    title: <>Manage <br /><span className="text-gradient">Departments</span></>,
+    description: "Add, edit, and manage academic departments."
+  },
+  facility: {
+    title: <>Manage <br /><span className="text-gradient">Facilities</span></>,
+    description: "Add, edit, and manage research facilities and laboratories."
+  },
+  service: {
+    title: <>Manage <br /><span className="text-gradient">Services</span></>,
+    description: "Add, edit, and manage specialized services and consultancies."
+  }
+};
+
+
+function AdminContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabFromQuery = searchParams.get('tab') as Tab | null;
+  
+  const [activeTab, setActiveTab] = useState<Tab>(tabFromQuery || 'dashboard');
+  const [isSeeding, setIsSeeding] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  useEffect(() => {
+    const currentTab = tabFromQuery || 'dashboard';
+    if (currentTab !== activeTab) {
+      setActiveTab(currentTab);
+    }
+  }, [tabFromQuery, activeTab]);
+
+  const handleSeed = async () => {
+    setShowConfirmModal(false);
+    try {
+      setIsSeeding(true);
+      await seedDatabase();
+      setShowSuccessModal(true);
+    } catch (error) {
+      // This is intentionally left blank to allow the FirebaseErrorListener to handle the error display.
+      setShowErrorModal(true);
+    } finally {
+      setIsSeeding(false);
+    }
+  };
+  
+  const addHref = {
+    dashboard: '', // No href for dashboard
+    department: '/admin/departments/new',
+    facility: '/admin/facilities/new',
+    service: '/admin/services/new',
+  };
+
+  const currentDetails = pageDetails[activeTab];
+
+  return (
+    <ProtectedRoute>
+      <PageContainer>
+        <PageHeader
+          title={currentDetails.title}
+          description={currentDetails.description}
+        >
+          <button
+            onClick={() => setShowConfirmModal(true)}
+            disabled={isSeeding}
+            className="btn-secondary group"
+          >
+            {isSeeding ? <Loader2 className="animate-spin" size={20} /> : <Database size={20} className="text-blue-700 dark:text-brand-start group-hover:scale-110 transition-transform" />}
+            <span>Seed Sample Data</span>
+          </button>
+        </PageHeader>
+        
+        <div key={activeTab}>
+          {activeTab === 'dashboard' && <AdminDashboardPage />}
+          {activeTab === 'department' && <AdminDepartmentsPage />}
+          {activeTab === 'facility' && <AdminFacilitiesPage />}
+          {activeTab === 'service' && <AdminServicesPage />}
+        </div>
+      </PageContainer>
+      
+      {activeTab !== 'dashboard' && addHref[activeTab] && (
+        <Link
+          href={addHref[activeTab]}
+          className="fixed bottom-8 right-8 btn-primary rounded-full w-14 h-14 p-0 shadow-2xl shadow-brand-start/40 z-40 flex items-center justify-center hover:scale-110 active:scale-100 transition-transform"
+          aria-label={`Add new ${activeTab}`}
+        >
+          <Plus size={32} />
+        </Link>
+      )}
+      
+      <ConfirmationModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={handleSeed}
+        title="Confirm Seed Action"
+        message="This will add sample data to your Firestore database. This action cannot be easily undone. Continue?"
+        confirmButtonText="Yes, Seed Data"
+        isDestructive={false}
+      />
+
+      <ConfirmationModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        onConfirm={() => setShowSuccessModal(false)}
+        title="Success"
+        message="Database seeded successfully with sample data!"
+        confirmButtonText="Great!"
+        isDestructive={false}
+      />
+      <ConfirmationModal
+        isOpen={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        onConfirm={() => setShowErrorModal(false)}
+        title="Error"
+        message="Failed to seed database. Please check your connection and try again."
+        confirmButtonText="Close"
+        isDestructive
+      />
+    </ProtectedRoute>
+  );
+}
+
+export default function AdminPage() {
+  return (
+    <React.Suspense fallback={<div className="p-8 text-center text-slate-400">Loading admin panel...</div>}>
+      <AdminContent />
+    </React.Suspense>
+  );
+}
