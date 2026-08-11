@@ -8,7 +8,7 @@
     "genkit:watch": "node ./node_modules/genkit-cli/dist/bin/genkit.js start -- node ./node_modules/tsx/dist/cli.mjs --watch src/ai/dev.ts",
     "build": "node ./node_modules/next/dist/bin/next build",
     "start": "node ./node_modules/next/dist/bin/next start",
-    "lint": "node ./node_modules/next/dist/bin/next lint",
+    "lint": "eslint .",
     "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit"
   },
   "dependencies": {
@@ -57,6 +57,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
     "@types/node": "^20.19.43",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
