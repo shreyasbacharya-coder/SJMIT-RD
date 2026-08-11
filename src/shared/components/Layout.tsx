@@ -58,14 +58,14 @@ function ProfileMenu() {
           </Avatar>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-64 mt-2">
+      <DropdownMenuContent align="end" className="w-auto min-w-[280px] max-w-sm p-2 mt-2">
         <DropdownMenuLabel className='font-normal p-3'>
           <div className="flex items-center gap-3">
-             <Avatar className="h-10 w-10">
+             <Avatar className="h-10 w-10 flex-shrink-0">
                 {user.photoURL ? <AvatarImage src={user.photoURL} alt={user.displayName || 'User'} /> : <AvatarFallback>{userInitial}</AvatarFallback>}
              </Avatar>
-            <div className="flex flex-col space-y-0.5">
-              <p className="text-sm font-bold leading-none text-slate-900 dark:text-white truncate">{user.displayName || user.email}</p>
+            <div className="flex flex-col space-y-1 min-w-0 flex-1">
+              <p className="text-sm font-bold leading-tight text-slate-900 dark:text-white break-all">{user.displayName || user.email}</p>
               <p className="text-xs leading-none text-slate-500 dark:text-slate-400">
                 {isAdmin ? 'Administrator' : 'User'}
               </p>
@@ -147,8 +147,11 @@ export function Navbar() {
         </div>
 
         {/* Right side controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <GlobalSearch />
+          <div className="hidden sm:block">
+            <ThemeSwitcher />
+          </div>
           <ProfileMenu />
           {/* Mobile Controls */}
           <div className="flex items-center gap-2 md:hidden">
@@ -209,6 +212,12 @@ export function Navbar() {
                             </div>
                           </div>
                         )}
+                        <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 sm:hidden">
+                          <p className="px-4 mb-3 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 tracking-wider">Appearance</p>
+                          <div className="px-4">
+                            <ThemeSwitcher />
+                          </div>
+                        </div>
                     </div>
                 </SheetContent>
             </Sheet>
@@ -252,7 +261,9 @@ export function Footer() {
               <li><Link href="/departments" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Departments</Link></li>
               <li><Link href="/facilities" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Facilities</Link></li>
               <li><Link href="/services" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Services</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">User Guide & Flow</Link></li>
+              {!loading && isAdmin && (
+                <li><Link href="/docs" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Admin Guide</Link></li>
+              )}
               {!isViewingAdmin && (
                 <li><Link href={adminLinkHref} className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Admin Login</Link></li>
               )}

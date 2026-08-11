@@ -3,132 +3,63 @@ import React from 'react';
 import { PageContainer } from '@/shared/components/PageContainer';
 import { PageHeader } from '@/shared/components/PageHeader';
 import { Card } from '@/components/ui/card';
-import { BookOpen, Compass, ShieldCheck, Cpu, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { ShieldCheck, Layers, PlusCircle, Pencil } from 'lucide-react';
+import { ProtectedRoute } from '@/shared/components/ProtectedRoute';
 
 export default function DocsPage() {
   return (
-    <PageContainer>
-      <PageHeader
-        title={<>User Guide & <span className="text-gradient">App Flow</span></>}
-        description="A complete guide to exploring public R&D resources and managing R&D infrastructure."
-      />
+    <ProtectedRoute requireAdmin>
+      <PageContainer>
+        <PageHeader
+          title={<>Admin Portal <span className="text-gradient">Guide</span></>}
+          description="Operational workflows for R&D Center Administrators to manage departments, facilities, services, and equipment."
+        />
 
-      <div className="space-y-12 max-w-4xl mx-auto">
-        {/* Quick Links */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <Card className="p-6 glass-card hover:border-brand-start/50 transition-all">
-            <Compass className="text-brand-start mb-4" size={32} />
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Public Visitor Flow</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Browse departments, facilities, and live equipment specifications.</p>
-            <a href="#public-flow" className="text-xs font-bold text-brand-start flex items-center gap-1 hover:underline">
-              View Flow <ArrowRight size={14} />
-            </a>
-          </Card>
-
-          <Card className="p-6 glass-card hover:border-brand-start/50 transition-all">
-            <ShieldCheck className="text-brand-end mb-4" size={32} />
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Admin Management</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Manage departments, labs, services, and equipment records.</p>
-            <a href="#admin-flow" className="text-xs font-bold text-brand-end flex items-center gap-1 hover:underline">
-              View Flow <ArrowRight size={14} />
-            </a>
-          </Card>
-
-          <Card className="p-6 glass-card hover:border-brand-start/50 transition-all">
-            <Cpu className="text-emerald-500 mb-4" size={32} />
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">CSR Architecture</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">How live updates work instantly without rebuilding the static site.</p>
-            <a href="#architecture" className="text-xs font-bold text-emerald-500 flex items-center gap-1 hover:underline">
-              View Details <ArrowRight size={14} />
-            </a>
-          </Card>
-        </div>
-
-        {/* Public User Flow */}
-        <section id="public-flow" className="space-y-6">
-          <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <Compass className="text-brand-start" /> Public User Flow
-          </h2>
-
-          <div className="space-y-4">
-            <Card className="p-6 border-l-4 border-l-brand-start">
-              <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">1. Academic Departments</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                Go to <strong>Departments</strong> in the top navigation bar (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/departments/</code>).
-              </p>
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                <li>Search departments by name or Head of Department (HOD).</li>
-                <li>Click any department card to view its dedicated page (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/departments/?id=civil-eng</code>).</li>
-                <li>View associated lab facilities and equipment live from the database.</li>
-              </ul>
-            </Card>
-
-            <Card className="p-6 border-l-4 border-l-brand-start">
-              <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">2. Research Infrastructure & Equipment</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                Go to <strong>Infrastructure</strong> (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/infrastructure/</code>).
-              </p>
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                <li>Filter equipment by academic department, search terms, or view layout (Grid / List).</li>
-                <li>Click any equipment item to open full live details (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/equipment/?id=&lt;id&gt;</code>).</li>
-                <li>Check availability status, lab location, and technical specifications.</li>
-              </ul>
-            </Card>
-
-            <Card className="p-6 border-l-4 border-l-brand-start">
-              <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">3. Facilities & Services Directories</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Explore specialized lab facilities (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/facilities/</code>) and testing services (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/services/</code>).
-              </p>
-            </Card>
-          </div>
-        </section>
-
-        {/* Admin Flow */}
-        <section id="admin-flow" className="space-y-6">
-          <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <ShieldCheck className="text-brand-end" /> Admin Flow (R&D Managers)
-          </h2>
-
-          <div className="space-y-4">
-            <Card className="p-6 border-l-4 border-l-brand-end">
-              <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">1. Dashboard & Login</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Access <strong>Admin Login</strong> (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/login/</code> or <code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/admin/</code>) to view overall statistics and system status.
-              </p>
-            </Card>
-
-            <Card className="p-6 border-l-4 border-l-brand-end">
-              <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">2. Managing Data</h3>
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-2">
-                <li><strong>Add Department</strong>: Click "+ Add Department" in the Departments tab (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/admin/departments/new/</code>).</li>
-                <li><strong>Edit Records</strong>: Edit departments, facilities, or services using query parameter links (<code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/admin/departments/edit/?id=&lt;id&gt;</code>).</li>
-                <li><strong>Add Equipment to Facility</strong>: Click "+ Add Equipment" inside any lab row.</li>
-              </ul>
-            </Card>
-          </div>
-        </section>
-
-        {/* Architecture */}
-        <section id="architecture" className="space-y-6">
-          <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <Cpu className="text-emerald-500" /> Static Host Architecture
-          </h2>
-
-          <Card className="p-6 bg-slate-50 dark:bg-white/5 space-y-4">
+        <div className="space-y-8 max-w-4xl mx-auto">
+          <Card className="p-6 border-l-4 border-l-brand-start bg-slate-50/50 dark:bg-white/5">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+              <ShieldCheck className="text-brand-start" /> Admin Workflow Overview
+            </h2>
             <p className="text-sm text-slate-600 dark:text-slate-300">
-              The portal is built as a static site hosted on <strong>GitHub Pages</strong> with 100% Client-Side Rendering (CSR):
-            </p>
-            <div className="p-4 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono overflow-x-auto">
-              GitHub Pages (Static Host) ──► Load HTML Shell ──► Browser Reads Query Param (?id=...) ──► Fetch Live Firebase DB Data ──► Render Page
-            </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              ✅ <strong>No Rebuild Needed</strong>: Creating or updating departments, facilities, or equipment in the admin panel updates the live site instantly without re-deploying GitHub Pages.
+              Welcome to the administrator management portal. Use the admin tabs on the main admin page (<code className="bg-slate-200 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/admin/</code>) to manage R&D infrastructure records in real-time.
             </p>
           </Card>
-        </section>
-      </div>
-    </PageContainer>
+
+          {/* Flow 1: Departments */}
+          <section className="space-y-4">
+            <h3 className="text-lg font-display font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Layers className="text-brand-start" size={20} /> 1. Academic Departments Management
+            </h3>
+            <Card className="p-6 space-y-3">
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Manage all academic departments associated with research activities.
+              </p>
+              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1.5">
+                <li><strong>Add New Department</strong>: Click the floating <span className="font-bold text-brand-start">+</span> button or Navigate to <code className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded text-xs">/admin/departments/new/</code>. Fill in department name, HOD details, contact email, and upload an optional image.</li>
+                <li><strong>Edit Department</strong>: Click the pencil (<Pencil className="inline" size={14} />) button next to any department to edit its details (`/admin/departments/edit/?id=&lt;id&gt;`).</li>
+                <li><strong>Delete Department</strong>: Click the trash button to delete a department.</li>
+              </ul>
+            </Card>
+          </section>
+
+          {/* Flow 2: Facilities & Services */}
+          <section className="space-y-4">
+            <h3 className="text-lg font-display font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <PlusCircle className="text-brand-end" size={20} /> 2. Laboratories, Facilities & Testing Services
+            </h3>
+            <Card className="p-6 space-y-3">
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Organize specialized lab facilities and testing/analytical services.
+              </p>
+              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1.5">
+                <li><strong>Add Facility / Service</strong>: Switch to the <strong>Facilities</strong> or <strong>Services</strong> tab in the admin panel and click the floating <span className="font-bold text-brand-start">+</span> button.</li>
+                <li><strong>Add Equipment to Lab/Service</strong>: Expand any facility or service row and click <strong>+ Add Equipment</strong> to link specific machinery, computers, or testing tools to that lab.</li>
+                <li><strong>Edit / Delete</strong>: Modify laboratory details or equipment availability status dynamically at any time.</li>
+              </ul>
+            </Card>
+          </section>
+        </div>
+      </PageContainer>
+    </ProtectedRoute>
   );
 }

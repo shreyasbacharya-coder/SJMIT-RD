@@ -76,10 +76,10 @@ function AdminContent() {
       {activeTab !== 'dashboard' && addHref[activeTab] && (
         <Link
           href={addHref[activeTab]}
-          className="fixed bottom-8 right-8 btn-primary rounded-full w-14 h-14 p-0 shadow-2xl shadow-brand-start/40 z-40 flex items-center justify-center hover:scale-110 active:scale-100 transition-transform"
+          className="fixed bottom-8 right-8 bg-brand-start hover:bg-brand-end text-white rounded-2xl w-16 h-16 shadow-2xl shadow-brand-start/50 z-40 flex items-center justify-center hover:scale-110 active:scale-95 transition-all border border-white/20"
           aria-label={`Add new ${activeTab}`}
         >
-          <Plus size={32} />
+          <Plus size={36} className="stroke-[3]" />
         </Link>
       )}
     </ProtectedRoute>
