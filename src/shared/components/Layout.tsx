@@ -71,11 +71,6 @@ function ProfileMenu() {
               </p>
             </div>
           </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <div className="p-2">
-            <ThemeSwitcher />
-        </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={handleLogout} className="text-rose-500 dark:text-rose-500 focus:bg-rose-500/10 focus:text-rose-600 dark:focus:text-rose-400 font-bold">
           <LogOut className="mr-2 h-4 w-4" />
