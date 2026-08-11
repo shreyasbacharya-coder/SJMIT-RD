@@ -132,7 +132,7 @@ export function AdminFacilitiesPage() {
   }
   
   const handleEdit = (id: string) => {
-    router.push(`/admin/facilities/${id}/edit`);
+    router.push(`/admin/facilities/edit?id=${id}`);
   };
 
   const isLoading = 

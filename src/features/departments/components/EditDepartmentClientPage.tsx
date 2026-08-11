@@ -15,7 +15,7 @@ function EditDepartmentFormContent({ id }: { id: string }) {
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Admin', href: '/admin?tab=department' },
     { label: 'Departments', href: '/admin?tab=department' },
-    { label: department?.name || '...', href: `/admin/departments/${id}` },
+    { label: department?.name || '...', href: `/admin/departments?id=${id}` },
     { label: 'Edit' }
   ];
 

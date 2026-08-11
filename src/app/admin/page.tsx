@@ -1,12 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Database, Loader2, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Link from 'next/link';
-import { seedDatabase } from '@/shared/utils/seed';
 import { PageContainer } from '@/shared/components/PageContainer';
 import { PageHeader } from '@/shared/components/PageHeader';
-import { ConfirmationModal } from '@/shared/components/ConfirmationModal';
 import { ProtectedRoute } from '@/shared/components/ProtectedRoute';
 
 import { AdminDepartmentsPage } from '@/features/departments/pages/AdminDepartmentsPage';
@@ -42,10 +40,6 @@ function AdminContent() {
   const tabFromQuery = searchParams.get('tab') as Tab | null;
   
   const [activeTab, setActiveTab] = useState<Tab>(tabFromQuery || 'dashboard');
-  const [isSeeding, setIsSeeding] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
     const currentTab = tabFromQuery || 'dashboard';
@@ -53,20 +47,6 @@ function AdminContent() {
       setActiveTab(currentTab);
     }
   }, [tabFromQuery, activeTab]);
-
-  const handleSeed = async () => {
-    setShowConfirmModal(false);
-    try {
-      setIsSeeding(true);
-      await seedDatabase();
-      setShowSuccessModal(true);
-    } catch (error) {
-      // This is intentionally left blank to allow the FirebaseErrorListener to handle the error display.
-      setShowErrorModal(true);
-    } finally {
-      setIsSeeding(false);
-    }
-  };
   
   const addHref = {
     dashboard: '', // No href for dashboard
@@ -83,16 +63,7 @@ function AdminContent() {
         <PageHeader
           title={currentDetails.title}
           description={currentDetails.description}
-        >
-          <button
-            onClick={() => setShowConfirmModal(true)}
-            disabled={isSeeding}
-            className="btn-secondary group"
-          >
-            {isSeeding ? <Loader2 className="animate-spin" size={20} /> : <Database size={20} className="text-blue-700 dark:text-brand-start group-hover:scale-110 transition-transform" />}
-            <span>Seed Sample Data</span>
-          </button>
-        </PageHeader>
+        />
         
         <div key={activeTab}>
           {activeTab === 'dashboard' && <AdminDashboardPage />}
@@ -111,35 +82,6 @@ function AdminContent() {
           <Plus size={32} />
         </Link>
       )}
-      
-      <ConfirmationModal
-        isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        onConfirm={handleSeed}
-        title="Confirm Seed Action"
-        message="This will add sample data to your Firestore database. This action cannot be easily undone. Continue?"
-        confirmButtonText="Yes, Seed Data"
-        isDestructive={false}
-      />
-
-      <ConfirmationModal
-        isOpen={showSuccessModal}
-        onClose={() => setShowSuccessModal(false)}
-        onConfirm={() => setShowSuccessModal(false)}
-        title="Success"
-        message="Database seeded successfully with sample data!"
-        confirmButtonText="Great!"
-        isDestructive={false}
-      />
-      <ConfirmationModal
-        isOpen={showErrorModal}
-        onClose={() => setShowErrorModal(false)}
-        onConfirm={() => setShowErrorModal(false)}
-        title="Error"
-        message="Failed to seed database. Please check your connection and try again."
-        confirmButtonText="Close"
-        isDestructive
-      />
     </ProtectedRoute>
   );
 }

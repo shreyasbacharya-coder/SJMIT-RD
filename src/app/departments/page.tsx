@@ -1,17 +1,33 @@
 'use client';
-import React, { useState } from 'react';
+import React, { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useDepartments } from '@/features/departments/hooks/useDepartments';
 import { DepartmentCard } from '@/features/departments/components/DepartmentCard';
+import { DepartmentDetailClientWrapper } from '@/features/departments/components/DepartmentDetailClientWrapper';
 import { Loader2, Search } from 'lucide-react';
 import { PageContainer } from '@/shared/components/PageContainer';
 import { PageHeader } from '@/shared/components/PageHeader';
 import { Card } from '@/components/ui/card';
 
-export default function DepartmentsPage() {
+function DepartmentsContent() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+
+  // If ?id= is present → show the department detail view (CSR from Firebase)
+  if (id) {
+    return <DepartmentDetailClientWrapper id={id} />;
+  }
+
+  // Otherwise → show the departments list
+  return <DepartmentsList />;
+}
+
+function DepartmentsList() {
   const { data: departments, isLoading } = useDepartments();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredDepartments = departments?.filter(dept => 
+  const filteredDepartments = departments?.filter(dept =>
     dept.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (dept.hod || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -55,8 +71,8 @@ export default function DepartmentsPage() {
           ) : (
             <Card className="text-center py-16 border-dashed">
               <p className="text-slate-500 dark:text-slate-400 mb-4">No departments found matching your search.</p>
-              <button 
-                onClick={() => setSearchTerm('')} 
+              <button
+                onClick={() => setSearchTerm('')}
                 className="btn-secondary"
               >
                 Clear Search
@@ -66,5 +82,17 @@ export default function DepartmentsPage() {
         </>
       )}
     </PageContainer>
+  );
+}
+
+export default function DepartmentsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="animate-spin text-brand-start" size={48} />
+      </div>
+    }>
+      <DepartmentsContent />
+    </Suspense>
   );
 }

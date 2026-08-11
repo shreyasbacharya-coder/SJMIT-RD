@@ -51,7 +51,7 @@ export function DepartmentsTable({ departments, onDelete }: DepartmentsTableProp
                   </div>
                 </TableCell>
                 <TableCell className="font-bold text-slate-900 dark:text-white">
-                  <Link href={`/admin/departments/${dept.id}`} className="hover:text-brand-start transition-colors">
+                  <Link href={`/admin/departments?id=${dept.id}`} className="hover:text-brand-start transition-colors">
                     {dept.name}
                   </Link>
                 </TableCell>
@@ -60,7 +60,7 @@ export function DepartmentsTable({ departments, onDelete }: DepartmentsTableProp
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Link
-                      href={`/admin/departments/${dept.id}/edit`}
+                      href={`/admin/departments/edit?id=${dept.id}`}
                       className="flex items-center justify-center p-2 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-all border border-slate-200 dark:border-white/10"
                     >
                       <Pencil size={14} />

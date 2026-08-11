@@ -102,7 +102,7 @@ export function AdminServicesPage() {
 
 
   const handleEdit = (id: string) => {
-    router.push(`/admin/services/${id}/edit`);
+    router.push(`/admin/services/edit?id=${id}`);
   };
 
   const handleDelete = async () => {

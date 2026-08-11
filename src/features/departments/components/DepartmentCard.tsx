@@ -14,7 +14,7 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
 
   return (
     <Card 
-      onClick={() => router.push(`/departments/${department.id}`)}
+      onClick={() => router.push(`/departments?id=${department.id}`)}
       className="group p-0 glass-card hover:border-brand-start/50 transition-all duration-500 cursor-pointer rounded-3xl overflow-hidden"
     >
       <div className="aspect-[4/3] w-full bg-slate-100 dark:bg-white/5 relative">

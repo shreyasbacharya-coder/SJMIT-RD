@@ -76,7 +76,7 @@ export function EquipmentGrid({ equipments, isLoading, onClearFilters, view }: E
         : "flex flex-col gap-4"
     )}>
       {equipments.map((equipment) => (
-        <Link href={`/equipment/${equipment.id}`} key={equipment.id} className="block no-underline h-full">
+        <Link href={`/equipment?id=${equipment.id}`} key={equipment.id} className="block no-underline h-full">
           <EquipmentCard 
             equipment={equipment} 
             view={view}
