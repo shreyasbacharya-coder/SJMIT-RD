@@ -11,6 +11,7 @@ if (isGithubActions) {
 const nextConfig: NextConfig = {
   output: 'export',
   basePath: basePath ? basePath : undefined,
+  trailingSlash: true,
   experimental: {
     scrollRestoration: true,
   },
