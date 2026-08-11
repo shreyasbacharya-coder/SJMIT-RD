@@ -252,6 +252,7 @@ export function Footer() {
               <li><Link href="/departments" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Departments</Link></li>
               <li><Link href="/facilities" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Facilities</Link></li>
               <li><Link href="/services" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Services</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">User Guide & Flow</Link></li>
               {!isViewingAdmin && (
                 <li><Link href={adminLinkHref} className="hover:text-blue-700 dark:hover:text-brand-start transition-colors">Admin Login</Link></li>
               )}
