@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Menu, X, Settings, Home, Building2, LayoutGrid, Activity, LogOut, Search, User as UserIcon, Users, LayoutDashboard } from 'lucide-react';
+import { Menu, X, Settings, Home, Building2, LayoutGrid, Activity, LogOut, Search, User as UserIcon, Users, LayoutDashboard, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '../utils/cn';
 import { useAuth } from '../../app/providers/AuthProvider';
@@ -71,8 +71,15 @@ function ProfileMenu() {
               </p>
             </div>
           </div>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={handleLogout} className="text-rose-500 dark:text-rose-500 focus:bg-rose-500/10 focus:text-rose-600 dark:focus:text-rose-400 font-bold">
+        {isAdmin && (
+          <DropdownMenuItem onSelect={() => router.push('/docs')} className="font-medium cursor-pointer">
+            <HelpCircle className="mr-2 h-4 w-4 text-brand-start" />
+            <span>Admin Help & Docs</span>
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuItem onSelect={handleLogout} className="text-rose-500 dark:text-rose-500 focus:bg-rose-500/10 focus:text-rose-600 dark:focus:text-rose-400 font-bold cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
